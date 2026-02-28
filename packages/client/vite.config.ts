@@ -11,8 +11,9 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
-    // Make the dev server accessible on the local network so that the
-    // "join link" can be opened from another device on the same LAN.
+    // Bind only to localhost for the dev server.
+    // To test the join link from another device on the same LAN, change
+    // this to '0.0.0.0' temporarily and ensure your firewall allows it.
     host: "localhost",
     watch: {
       // Tell Vite to ignore changes inside the Rust/Tauri tree so it

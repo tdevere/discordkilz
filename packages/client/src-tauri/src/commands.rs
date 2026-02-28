@@ -11,6 +11,8 @@ use uuid::Uuid;
 // ---------------------------------------------------------------------------
 const DEV_API_KEY: &str = "devkey";
 const DEV_API_SECRET: &str = "devsecret-change-me-in-production";
+// NOTE: Use "wss://" (TLS) and a proper certificate in any non-localhost
+// deployment.  "ws://" is only safe when both peers are on the same machine.
 const LIVEKIT_URL: &str = "ws://localhost:7880";
 const FRONTEND_URL: &str = "http://localhost:5173";
 
@@ -119,8 +121,16 @@ pub(crate) fn mint_token(room: &str, identity: &str, can_create: bool) -> Result
 /// Called from React via `invoke("create_voice_room")`.
 #[tauri::command]
 pub fn create_voice_room() -> Result<VoiceRoomInfo, String> {
-    // Use the first 8 hex chars of a UUID for a short, unique room name.
-    let room_name = format!("room-{}", &Uuid::new_v4().to_string()[..8]);
+    // Take the first 8 alphanumeric characters of a UUID for a short,
+    // unique room name.  chars().take(8) is safe regardless of UUID format.
+    let room_name = format!(
+        "room-{}",
+        Uuid::new_v4()
+            .to_string()
+            .chars()
+            .take(8)
+            .collect::<String>()
+    );
 
     // Host token: full privileges including room creation.
     let host_token = mint_token(&room_name, "host", true)?;

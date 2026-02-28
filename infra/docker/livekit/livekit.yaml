@@ -21,7 +21,10 @@ rtc:
   tcp_port: 7881
 
 # Dev API key/secret — must match DEV_API_KEY / DEV_API_SECRET in
-# packages/client/src-tauri/src/lib.rs
+# packages/client/src-tauri/src/commands.rs
+#
+# WARNING: Replace both values with strong random secrets before any
+# non-localhost deployment.  Never commit real secrets to version control.
 keys:
   devkey: devsecret-change-me-in-production
 

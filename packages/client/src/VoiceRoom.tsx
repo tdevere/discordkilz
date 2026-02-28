@@ -117,8 +117,9 @@ export default function VoiceRoom({ livekitUrl, token, e2eeKey, onLeave }: Props
           return;
         }
 
-        // Enable the local microphone track — this is what lets you hear
-        // yourself (loopback) when testing alone.
+        // Publish the local microphone track to the room.  LiveKit will
+        // deliver it back to the same participant as a remote track, which
+        // is how the loopback audio works in a single-participant session.
         await room.localParticipant.setMicrophoneEnabled(true);
 
         setConnState("connected");

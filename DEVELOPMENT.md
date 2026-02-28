@@ -190,7 +190,7 @@ packages/client/
 │   └── index.css           ← Dark-theme styles
 └── src-tauri/
     └── src/
-        └── lib.rs          ← Rust: JWT token generation + E2EE key derivation
+        └── commands.rs     ← Rust: JWT token generation + E2EE key derivation
 
 infra/docker/livekit/
 ├── docker-compose.yml      ← Spin up a local LiveKit server with one command
@@ -205,7 +205,7 @@ By default everything points to `ws://localhost:7880`.  To use a remote or
 staging LiveKit server:
 
 1. Update `LIVEKIT_URL` and `FRONTEND_URL` constants in
-   `packages/client/src-tauri/src/lib.rs`.
+   `packages/client/src-tauri/src/commands.rs`.
 2. Update `DEV_API_KEY` / `DEV_API_SECRET` to match your server's credentials.
 3. Re-run `npm run tauri dev`.
 
