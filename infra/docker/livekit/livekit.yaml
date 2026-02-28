@@ -10,13 +10,11 @@
 port: 7880
 
 rtc:
-  # Bind to all interfaces so the Tauri WebView can reach the server.
-  listen_ip: 0.0.0.0
   # Advertise localhost for local-only development.
   node_ip: 127.0.0.1
   # UDP port range for WebRTC media.
-  udp_port_range_start: 50000
-  udp_port_range_end: 50020
+  port_range_start: 50000
+  port_range_end: 50020
   # TCP-fallback for environments where UDP is blocked.
   tcp_port: 7881
 

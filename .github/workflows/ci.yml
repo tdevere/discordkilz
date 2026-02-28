@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # --------------------------------------------------------------------------
+  # Frontend — Vitest unit tests
+  # --------------------------------------------------------------------------
+  frontend-tests:
+    name: Frontend Tests (Vitest)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: packages/client/package-lock.json
+
+      - name: Install dependencies
+        working-directory: packages/client
+        run: npm ci
+
+      - name: Run Vitest (with coverage)
+        working-directory: packages/client
+        run: npm run test:coverage
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-coverage
+          path: packages/client/coverage/
+
+  # --------------------------------------------------------------------------
+  # Rust backend — cargo test (unit tests in commands.rs)
+  # --------------------------------------------------------------------------
+  rust-tests:
+    name: Rust Tests (cargo test)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system libraries required by Tauri/WebKit on Linux
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev
+
+      - name: Install Rust stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Cargo registry + build artefacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            packages/client/src-tauri/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('packages/client/src-tauri/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Run cargo tests
+        working-directory: packages/client/src-tauri
+        run: cargo test --lib -- --nocapture
