@@ -1,0 +1,25 @@
+[package]
+name = "client"
+version = "0.1.0"
+description = "Project Hollow – Core Media Service (Voice Test)"
+authors = []
+edition = "2021"
+rust-version = "1.77"
+
+# Tauri requires both lib and bin targets.
+[lib]
+name = "client_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+jsonwebtoken = { version = "10", features = ["rust_crypto"] }
+uuid = { version = "1", features = ["v4"] }
+rand = "0.8"
+base64 = "0.22"
+urlencoding = "2"
