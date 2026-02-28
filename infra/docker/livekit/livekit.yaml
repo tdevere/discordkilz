@@ -1,0 +1,33 @@
+# livekit.yaml — LiveKit server configuration (local dev only)
+#
+# WARNING: The keys below are development-only placeholders.
+#          Never use these values in a production or public-facing deployment.
+#          Replace them with strong random secrets and load them via
+#          environment variables in staging/production.
+#
+# Docs: https://docs.livekit.io/home/self-hosting/local/
+
+port: 7880
+
+rtc:
+  # Bind to all interfaces so the Tauri WebView can reach the server.
+  listen_ip: 0.0.0.0
+  # Advertise localhost for local-only development.
+  node_ip: 127.0.0.1
+  # UDP port range for WebRTC media.
+  udp_port_range_start: 50000
+  udp_port_range_end: 50020
+  # TCP-fallback for environments where UDP is blocked.
+  tcp_port: 7881
+
+# Dev API key/secret — must match DEV_API_KEY / DEV_API_SECRET in
+# packages/client/src-tauri/src/lib.rs
+keys:
+  devkey: devsecret-change-me-in-production
+
+logging:
+  level: info
+
+# Disable TURN for local dev (no external connectivity required)
+turn:
+  enabled: false

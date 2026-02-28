@@ -1,0 +1,218 @@
+/* ============================================================
+   Project Hollow – Core Media Service
+   Minimal dark-theme stylesheet
+   ============================================================ */
+
+:root {
+  --bg-deep:    #0f1117;
+  --bg-surface: #1a1d27;
+  --bg-card:    #22263a;
+  --accent:     #5865f2;
+  --accent-hover: #4752c4;
+  --success:    #3ba55c;
+  --danger:     #ed4245;
+  --text-primary:   #e3e5e8;
+  --text-secondary: #9b9ea4;
+  --border:     #2e3147;
+  --radius:     8px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#root {
+  width: 100%;
+  max-width: 640px;
+  padding: 24px;
+}
+
+/* ---- Utility ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-top: 16px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.badge--e2ee {
+  background: rgba(59, 165, 92, 0.18);
+  color: var(--success);
+  border: 1px solid rgba(59, 165, 92, 0.35);
+}
+
+.badge--disconnected {
+  background: rgba(237, 66, 69, 0.18);
+  color: var(--danger);
+  border: 1px solid rgba(237, 66, 69, 0.35);
+}
+
+.badge--connecting {
+  background: rgba(88, 101, 242, 0.18);
+  color: var(--accent);
+  border: 1px solid rgba(88, 101, 242, 0.35);
+}
+
+/* ---- Buttons ---- */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 28px;
+  width: 100%;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  font-size: 0.875rem;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--bg-card);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #c0383b;
+}
+
+/* ---- Link display ---- */
+.link-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.link-box code {
+  flex: 1;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Participant strip ---- */
+.participants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.participant-tile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
+}
+
+.dot--muted {
+  background: var(--text-secondary);
+}
+
+/* ---- Controls row ---- */
+.controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* ---- Header ---- */
+.app-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.app-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.app-header p {
+  color: var(--text-secondary);
+  margin-top: 6px;
+  font-size: 0.9rem;
+}
+
+/* ---- Error notice ---- */
+.error-notice {
+  background: rgba(237, 66, 69, 0.1);
+  border: 1px solid rgba(237, 66, 69, 0.3);
+  color: var(--danger);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  margin-top: 12px;
+  font-size: 0.85rem;
+}

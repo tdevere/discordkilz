@@ -1,0 +1,26 @@
+# docker-compose.yml — Local LiveKit Server (dev only)
+#
+# Usage:
+#   cd infra/docker/livekit
+#   docker compose up -d
+#
+# The LiveKit server will be available at:
+#   - WebSocket (clients): ws://localhost:7880
+#   - HTTP API:            http://localhost:7880
+#   - TURN (UDP):          localhost:3478
+#
+# Dev API key / secret are defined in livekit.yaml and must match the
+# constants in packages/client/src-tauri/src/lib.rs.
+
+services:
+  livekit:
+    image: livekit/livekit-server:latest
+    command: --config /etc/livekit.yaml
+    ports:
+      - "7880:7880"         # WebSocket / HTTP
+      - "7881:7881/tcp"     # RTC/TCP
+      - "3478:3478/udp"     # TURN UDP
+      - "50000-50020:50000-50020/udp"  # WebRTC media UDP range
+    volumes:
+      - ./livekit.yaml:/etc/livekit.yaml:ro
+    restart: unless-stopped
