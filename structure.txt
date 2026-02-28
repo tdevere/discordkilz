@@ -1,0 +1,121 @@
+Project Hollow — Monorepo Folder Hierarchy
+==========================================
+
+discordkilz/                          ← Root of the monorepo
+│
+├── apps/                             ← Deployable end-user applications
+│   │
+│   ├── desktop/                      ← Tauri desktop app (Windows / macOS / Linux)
+│   │   ├── src-tauri/                ← Rust backend for the Tauri shell
+│   │   │   ├── src/
+│   │   │   │   ├── main.rs           ← Tauri entry point; wires commands to core
+│   │   │   │   └── commands.rs       ← Tauri IPC commands exposed to the frontend
+│   │   │   ├── tauri.conf.json       ← Tauri build / window configuration
+│   │   │   └── Cargo.toml            ← Rust dependencies for the desktop shell
+│   │   ├── src/                      ← React + TypeScript frontend
+│   │   │   ├── main.tsx              ← React root mount point
+│   │   │   ├── App.tsx               ← Top-level component / router
+│   │   │   ├── pages/                ← Route-level page components
+│   │   │   │   ├── LoginPage.tsx
+│   │   │   │   ├── HomeServerPage.tsx
+│   │   │   │   └── ChannelPage.tsx
+│   │   │   ├── components/           ← Desktop-specific UI widgets
+│   │   │   │   ├── Sidebar.tsx       ← Room / server list
+│   │   │   │   ├── MessagePane.tsx   ← Chat history + input box
+│   │   │   │   └── VoiceBar.tsx      ← Active voice call controls
+│   │   │   └── hooks/                ← React hooks that call Tauri commands
+│   │   │       ├── useMatrix.ts
+│   │   │       └── useVoice.ts
+│   │   ├── public/                   ← Static assets (icons, fonts)
+│   │   ├── index.html
+│   │   ├── vite.config.ts            ← Vite bundler config
+│   │   ├── tsconfig.json
+│   │   └── package.json
+│   │
+│   └── web/                          ← Progressive Web App (browser-only version)
+│       ├── src/
+│       │   ├── main.tsx
+│       │   ├── App.tsx
+│       │   └── ...                   ← Mirrors apps/desktop/src but without Tauri calls
+│       ├── public/
+│       ├── index.html
+│       ├── vite.config.ts
+│       ├── tsconfig.json
+│       └── package.json
+│
+├── packages/                         ← Shared libraries used by both apps
+│   │
+│   ├── core/                         ← Rust library: Matrix SDK + LiveKit integration
+│   │   ├── src/
+│   │   │   ├── lib.rs                ← Public API surface of the core library
+│   │   │   ├── matrix/
+│   │   │   │   ├── mod.rs
+│   │   │   │   ├── client.rs         ← Matrix login, sync, room management
+│   │   │   │   ├── messages.rs       ← Send / receive Matrix events
+│   │   │   │   └── encryption.rs     ← E2E encryption helpers
+│   │   │   ├── voice/
+│   │   │   │   ├── mod.rs
+│   │   │   │   ├── livekit.rs        ← LiveKit room / track management
+│   │   │   │   └── devices.rs        ← Microphone / camera enumeration
+│   │   │   └── error.rs              ← Unified error types
+│   │   ├── Cargo.toml
+│   │   └── README.md                 ← How to use this library
+│   │
+│   ├── ui/                           ← Shared React component library (design system)
+│   │   ├── src/
+│   │   │   ├── index.ts              ← Re-exports all components
+│   │   │   ├── tokens/               ← Design tokens (colors, spacing, typography)
+│   │   │   │   └── stoat-theme.ts    ← "Stoat" visual theme (Discord-familiar palette)
+│   │   │   ├── components/
+│   │   │   │   ├── Avatar.tsx
+│   │   │   │   ├── Button.tsx
+│   │   │   │   ├── ChannelList.tsx
+│   │   │   │   ├── MessageBubble.tsx
+│   │   │   │   └── VoiceIndicator.tsx
+│   │   │   └── stories/              ← Storybook stories for component previews
+│   │   ├── tsconfig.json
+│   │   └── package.json
+│   │
+│   └── bridges/                      ← Modular bridge adapters (plug-in architecture)
+│       ├── src/
+│       │   ├── lib.rs                ← Bridge trait definition
+│       │   ├── stoat/
+│       │   │   └── mod.rs            ← Stoat bridge adapter (future)
+│       │   └── discord/
+│       │       └── mod.rs            ← Discord bridge via mautrix-discord (future)
+│       └── Cargo.toml
+│
+├── docs/                             ← Project documentation
+│   ├── CONTRIBUTING.md               ← How to contribute (branch naming, PR process)
+│   ├── ARCHITECTURE.md               ← High-level system design diagrams
+│   ├── SECURITY.md                   ← Responsible disclosure policy
+│   └── tutorials/
+│       ├── matrix-login.md           ← Step-by-step: connect to a Matrix homeserver
+│       ├── voice-channel.md          ← Step-by-step: join a LiveKit voice channel
+│       └── build-from-source.md      ← Full dev environment setup guide
+│
+├── infra/                            ← Infrastructure / deployment configs
+│   ├── docker/
+│   │   ├── livekit/
+│   │   │   ├── docker-compose.yml    ← Self-hosted LiveKit server (dev & staging)
+│   │   │   └── livekit.yaml          ← LiveKit server configuration
+│   │   └── synapse/
+│   │       ├── docker-compose.yml    ← Self-hosted Matrix (Synapse) homeserver
+│   │       └── homeserver.yaml       ← Synapse configuration template
+│   └── scripts/
+│       ├── bootstrap.sh              ← One-command dev environment setup
+│       └── release.sh                ← Cross-platform release build script
+│
+├── .github/
+│   ├── workflows/
+│   │   ├── ci.yml                    ← Lint + test on every PR
+│   │   └── release.yml               ← Build & publish desktop installers on tag push
+│   └── ISSUE_TEMPLATE/
+│       ├── bug_report.md
+│       └── feature_request.md
+│
+├── .gitignore                        ← Excludes node_modules, target/, dist/, .env
+├── Cargo.toml                        ← Workspace Cargo.toml (lists all Rust crates)
+├── package.json                      ← Workspace package.json (npm workspaces)
+├── README.md                         ← Project overview (you are reading this)
+└── structure.txt                     ← This file
